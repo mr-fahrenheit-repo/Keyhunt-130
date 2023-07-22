@@ -24,9 +24,10 @@ while True:
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             content = file.read()
-            telegram_send(content)
             print(content)
+            telegram_send(content)
+            run('taskkill /F /IM keyhunt.exe')
             break
     else:
-        time.sleep(900)   
-        run('taskkill /F /IM keyhunt.exe')
+        time.sleep(300)
+        continue

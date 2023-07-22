@@ -1,15 +1,23 @@
 # Importing Libraries 
 import os
 import time
-import random
+import requests
+
+# Range parameter
+start = 1 
+end = 73786976294838206463 # end of range for puzzle number 66
+
+# Telegram function for notification
+def telegram_send(chat):
+  bot_token = "6164636818:AAEgHAPXUbax8AOtMtMRDmr4a3nAhlrwB_U"
+  bot_chat_id = "380163757"
+  chat_message = 'https://api.telegram.org./bot' + bot_token + '/sendMessage?chat_id=' + bot_chat_id +'&text=' + chat # type: ignore
+  response = requests.get(chat_message)
+  return response.json() 
 
 # Running a command function
 def run(command):
     os.system(command)
-
-# Range parameter
-start = 884734153994440035227919469688326717440 # 3/10 from range on puzzle number 130
-end = 1156960047531190745552328174902282551296 # 7/10 from range on puzzle number 130
 
 # Path to file list of public key to check
 cd = os.getcwd()
@@ -20,12 +28,16 @@ def int_to_hex(value):
     hex = format(value, '064x')
     return hex
 
-# Looping the whole process
-while True:
+# main function
+def main():
     run('cls')
-    x = random.randint(start, end)
-    range_start = int_to_hex(x)
-    range_end = int_to_hex(x + 49258120924364800)
-    command_to_execute = f'keyhunt.exe -m bsgs -f {path} -t 8 -r {range_start}:{range_end} -q -k 256 -B sequential -s 10 -S'
+    range_start = int_to_hex(start)
+    range_end = int_to_hex(end)
+    command_to_execute = f'keyhunt.exe -m bsgs -f {path} -t 16 -r {range_start}:{range_end} -q -k 512 -B sequential -s 10 -S'
     run(command_to_execute)
-    time.sleep(3)
+    time.sleep(1)
+  
+# Run the main function  
+if __name__ == '__main__':
+    main()
+    telegram_send(f"Run Finished! Range : {start} - {end}")
